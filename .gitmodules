@@ -1,0 +1,3 @@
+[submodule "gcalert"]
+	path = gcalert
+	url = ssh://aur@aur4.archlinux.org/gcalert.git
