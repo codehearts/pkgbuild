@@ -1,6 +1,6 @@
-[submodule "lightdm-webkit-theme-wisp"]
-	path = lightdm-webkit-theme-wisp
-	url = aur:/lightdm-webkit-theme-wisp.git
 [submodule "gcalert"]
 	path = gcalert
 	url = aur:/gcalert.git
+[submodule "lightdm-webkit-theme-wisp"]
+	path = lightdm-webkit-theme-wisp
+	url = aur:/lightdm-webkit-theme-wisp.git
