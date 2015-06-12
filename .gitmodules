@@ -1,3 +1,6 @@
+[submodule "lightdm-webkit-theme-wisp"]
+	path = lightdm-webkit-theme-wisp
+	url = aur:/lightdm-webkit-theme-wisp.git
 [submodule "gcalert"]
 	path = gcalert
-	url = ssh://aur@aur4.archlinux.org/gcalert.git
+	url = aur:/gcalert.git
