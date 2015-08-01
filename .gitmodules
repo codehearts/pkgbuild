@@ -4,3 +4,6 @@
 [submodule "lightdm-webkit-theme-wisp"]
 	path = lightdm-webkit-theme-wisp
 	url = aur:/lightdm-webkit-theme-wisp.git
+[submodule "lightdm-webkit-theme-tendou"]
+	path = lightdm-webkit-theme-tendou
+	url = aur:/lightdm-webkit-theme-tendou.git
