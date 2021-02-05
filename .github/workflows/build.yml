@@ -1,0 +1,44 @@
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - master
+
+name: Build
+
+jobs:
+  make:
+    strategy:
+      matrix:
+        package: [gcalert, lightdm-webkit-theme-tendou, lightdm-webkit-theme-wisp]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: docker://archlinux:latest
+        env:
+          PACKAGE: ${{ matrix.package }}
+        run: |
+          cd $PACKAGE
+          makepkg -sri
+  deploy:
+    if: github.ref == 'refs/heads/master'
+    needs: make
+    strategy:
+      matrix:
+        package: [gcalert, lightdm-webkit-theme-tendou, lightdm-webkit-theme-wisp]
+    steps:
+      - env:
+          PACKAGE: ${{ matrix.package }}
+          SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
+          SSH_KEY_PATH: ${{ github.workspace }}/../private.key
+        run: |
+          mkdir -p ~/.ssh/
+          echo "Host aur" > ~/.ssh/config
+          echo "  HostName aur.archlinux.org" >> ~/.ssh/config
+          echo "  IdentityFile ~/.ssh/aur" >> ~/.ssh/config
+          echo "  User aur" >> ~/.ssh/config
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/aur
+          sudo chmod -R 600 ~/.ssh
+          ssh-keyscan -v aur.archlinux.org > ~/.ssh/known_hosts
+          git subtree push --prefix=$PACKAGE $PACKAGE master
