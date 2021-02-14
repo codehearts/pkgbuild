@@ -25,7 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: |
-          pacman -Sy --noconfirm --noprogressbar base-devel git
+          pacman -S --noconfirm --noprogressbar base-devel git
           echo 'nobody ALL=NOPASSWD:ALL' >> /etc/sudoers
           chown -R nobody /vol/$PACKAGE && cd /vol/$PACKAGE
           sudo -u nobody makepkg -sri --noconfirm --noprogressbar
