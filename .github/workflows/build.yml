@@ -38,16 +38,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - env:
           PACKAGE: ${{ matrix.package }}
           SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
         run: |
-          sudo mkdir -p $HOME/.ssh
-          echo "Host aur.archlinux.org" | sudo tee -a $HOME/.ssh/config
-          echo "  IdentityFile $HOME/.ssh/aur" | sudo tee -a $HOME/.ssh/config
-          echo "  User aur" | sudo tee -a $HOME/.ssh/config
-          echo "$SSH_PRIVATE_KEY" | sudo tee -a $HOME/.ssh/aur > /dev/null
-          sudo chmod -R 600 $HOME/.ssh
-          ssh-keyscan -v aur.archlinux.org | sudo tee -a $HOME/.ssh/known_hosts
-          git remote add $PACKAGE aur@aur.archlinux.org:$PACKAGE.git
-          git subtree push --prefix=$PACKAGE $PACKAGE master
+          mkdir -p ~/.ssh
+          echo "Host aur" > ~/.ssh/config
+          echo "  HostName aur.archlinux.org" >> ~/.ssh/config
+          echo "  IdentityFile ~/.ssh/aur" >> ~/.ssh/config
+          echo "  User aur" >> ~/.ssh/config
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/aur
+          ssh-keyscan aur.archlinux.org > ~/.ssh/known_hosts
+          chmod -R 600 ~/.ssh/{aur,config,known_hosts}
+          git remote add $PACKAGE-remote aur:$PACKAGE.git
+          git subtree push --prefix=$PACKAGE $PACKAGE-remote master
